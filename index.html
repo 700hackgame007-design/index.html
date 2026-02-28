@@ -12,6 +12,7 @@ body{
     background:black;
     color:white;
     transition:0.3s;
+    scroll-behavior:smooth;
 }
 
 nav{
@@ -45,6 +46,10 @@ nav{
     transition:0.3s;
 }
 
+.button:hover{
+    transform:scale(1.1);
+}
+
 .red{background:red;color:white;}
 .blue{background:blue;color:white;}
 .green{background:green;color:white;}
@@ -52,6 +57,14 @@ nav{
 .section{
     padding:80px 20px;
     text-align:center;
+    opacity:0;
+    transform:translateY(50px);
+    transition:0.8s;
+}
+
+.section.visible{
+    opacity:1;
+    transform:translateY(0);
 }
 
 .grid{
@@ -67,6 +80,18 @@ nav{
     padding:30px;
     border-radius:25px;
     box-shadow:0 0 20px rgba(255,255,255,0.05);
+    transition:0.3s;
+}
+
+.card img{
+    width:100%;
+    border-radius:20px;
+    transition:0.4s;
+    cursor:pointer;
+}
+
+.card img:hover{
+    transform:scale(1.08);
 }
 
 footer{
@@ -76,7 +101,6 @@ footer{
     opacity:0.6;
 }
 
-/* Light Mode */
 .light{
     background:white;
     color:black;
@@ -84,13 +108,6 @@ footer{
 
 .light .card{
     background:#f5f5f5;
-    color:black;
-}
-
-.light section,
-.light nav,
-.light footer{
-    background:white !important;
     color:black;
 }
 
@@ -104,6 +121,25 @@ footer{
     background:#111;
 }
 
+/* Lightbox */
+#lightbox{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.9);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+}
+
+#lightbox img{
+    max-width:80%;
+    max-height:80%;
+    border-radius:20px;
+}
 </style>
 </head>
 
@@ -114,7 +150,7 @@ footer{
 <button class="button" onclick="toggleMode()">Light/Dark</button>
 </nav>
 
-<section class="hero">
+<section class="hero section">
 <h1 class="glow-title">DOOM SMP</h1>
 <p>Überlebe. Kämpfe. Baue dein Imperium.</p>
 
@@ -125,20 +161,9 @@ footer{
 </section>
 
 <section class="section grid">
-<div class="card">
-<h2>PvP & Clans</h2>
-<p>Intensive Kämpfe und mächtige Clans.</p>
-</div>
-
-<div class="card">
-<h2>Community</h2>
-<p>Events und aktive Spieler.</p>
-</div>
-
-<div class="card">
-<h2>Wirtschaft</h2>
-<p>Handel und Auktionen.</p>
-</div>
+<div class="card"><h2>PvP & Clans</h2><p>Intensive Kämpfe und mächtige Clans.</p></div>
+<div class="card"><h2>Community</h2><p>Events und aktive Spieler.</p></div>
+<div class="card"><h2>Wirtschaft</h2><p>Handel und Auktionen.</p></div>
 </section>
 
 <section class="section dark-section">
@@ -151,7 +176,6 @@ footer{
 
 <section class="section">
 <h2>Unser Team</h2>
-
 <div class="grid">
 <div class="card"><h3>Prime_Lasse</h3><p>Server Inhaber</p></div>
 <div class="card"><h3>WoodEXPLOSIVE</h3><p>Owner</p></div>
@@ -160,55 +184,51 @@ footer{
 <div class="card"><h3>Hack_Game</h3><p>Developer</p></div>
 <div class="card"><h3>lqma_</h3><p>Moderator</p></div>
 <div class="card"><h3>vampzjr</h3><p>Moderator</p></div>
-<div class="card"><h3>Benello_GHG_</h3><p>Builder</p></div>
 </div>
-</section>
-
-<section class="section dark-section">
-<h2>DOOM SMP Wiki</h2>
-
-<div class="grid">
-<div class="card">
-<h3>Team</h3>
-<p>Wir sind ein freundliches und hilfsbereites Team und bei Fragen die besten Ansprechpartner.</p>
-</div>
-
-<div class="card">
-<h3>Gameplay</h3>
-<p>Survival SMP mit PvP, Clans und Wirtschaft.</p>
-</div>
-
-<div class="card">
-<h3>Support</h3>
-<p>Discord beitreten für Hilfe.</p>
-</div>
-</div>
-</section>
-
-<section class="section">
-<h2>Vote für DOOM SMP</h2>
-
-<button class="button green" onclick="window.open('https://minecraft-server.eu','_blank')">
-Minecraft-Server.eu
-</button>
-
-<button class="button blue" onclick="window.open('https://www.planetminecraft.com/server/doom-smp/','_blank')">
-planetminecraft.com
-</button>
 </section>
 
 <section class="section dark-section">
 <h2>Discord</h2>
-
-<button class="button blue"
-onclick="window.open('https://discord.gg/n6HSnBmnph','_blank')">
+<button class="button blue" onclick="window.open('https://discord.gg/n6HSnBmnph','_blank')">
 Discord öffnen
 </button>
+</section>
+
+<!-- Galerie -->
+<section class="section">
+<h2>Galerie</h2>
+<div class="grid">
+<div class="card"><img src="img1.png" onclick="openLightbox(this.src)"></div>
+<div class="card"><img src="img2.png" onclick="openLightbox(this.src)"></div>
+<div class="card"><img src="img3.png" onclick="openLightbox(this.src)"></div>
+</div>
+</section>
+
+<!-- Intro -->
+<section class="section dark-section">
+<h2>DOOMSMP Intro</h2>
+
+<div style="max-width:900px;margin:auto;">
+    <iframe width="722" height="406" src="https://www.youtube.com/embed/XebtEeHbmBo" title="DoomSMP Tutorial" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+<br>
+
+<button class="button red"
+onclick="window.open('https://www.youtube.com/@DoomSMP1','_blank')">
+YouTube Kanal besuchen
+</button>
+
 </section>
 
 <footer>
 © 2026 DOOM SMP | ®Hack_Game
 </footer>
+
+<!-- Lightbox -->
+<div id="lightbox" onclick="closeLightbox()">
+<img id="lightbox-img">
+</div>
 
 <script>
 function copyServerIP(){
@@ -220,22 +240,39 @@ function toggleMode(){
     document.body.classList.toggle("light");
 }
 
-// Server Status API
+function openLightbox(src){
+    document.getElementById("lightbox").style.display="flex";
+    document.getElementById("lightbox-img").src=src;
+}
+
+function closeLightbox(){
+    document.getElementById("lightbox").style.display="none";
+}
+
+// Scroll Animation
+const sections = document.querySelectorAll(".section");
+window.addEventListener("scroll", () => {
+    sections.forEach(sec => {
+        const top = sec.getBoundingClientRect().top;
+        if(top < window.innerHeight - 100){
+            sec.classList.add("visible");
+        }
+    });
+});
+
+// Server Status
 async function loadServer(){
     try{
         let res = await fetch("https://api.mcsrvstat.us/2/DOOMSMP.de");
         let data = await res.json();
-
         document.getElementById("serverStatus").innerText =
             "Status: " + (data.online ? "🟢 Online" : "🔴 Offline");
-
         document.getElementById("playerCount").innerText =
             "Spieler: " + (data.players?.online || 0);
     }catch(e){
         document.getElementById("serverStatus").innerText = "Status: Fehler";
     }
 }
-
 loadServer();
 </script>
 
