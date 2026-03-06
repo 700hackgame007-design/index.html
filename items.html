@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DOOM SMP - Items & Commands</title>
+<style>
+/* --- Grundlayout --- */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0b0b0b;
+  color: white;
+  scroll-behavior: smooth;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 20px 40px;
+  background: #111;
+  border-bottom: 1px solid #222;
+}
+
+nav h2 {
+  cursor: pointer;
+  font-size: 28px;
+  background: linear-gradient(90deg, #FF3300, #FF6600);
+  -webkit-background-clip: text;
+  color: transparent;
+  margin: 5px 0;
+}
+
+.nav-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+/* --- Buttons --- */
+.button {
+  padding: 12px 28px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  color: white;
+  background: #FF3300;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+  white-space: nowrap;
+}
+
+.button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.15);
+  transition: left 0.4s ease;
+  border-radius: 30px;
+}
+
+.button:hover::before {
+  left: 100%;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 51, 0, 0.5);
+}
+
+/* --- Sections & Cards --- */
+.section {
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.card {
+  background: #222;
+  color: white;
+  padding: 30px;
+  border-radius: 20px;
+  border: 1px solid #333;
+  text-align: left;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  cursor: pointer;
+}
+
+.card h2 {
+  margin-bottom: 10px;
+}
+
+.card p {
+  margin: 5px 0;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(255, 51, 0, 0.6);
+  background: linear-gradient(145deg, #1a0000, #330000);
+}
+
+/* --- Footer --- */
+footer {
+  text-align: center;
+  padding: 40px;
+  border-top: 1px solid #222;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <h2 onclick="location.href='index.html'">DOOM SMP</h2>
+  <div class="nav-buttons">
+    <button class="button" onclick="location.href='wiki.html'">Wiki</button>
+    <button class="button" onclick="location.href='index.html'">Home</button>
+    <button class="button" onclick="location.href='events.html'">Events</button>
+    <button class="button" onclick="location.href='clans.html'">Clans</button>
+  </div>
+</nav>
+
+<section class="section">
+  <h1>Items</h1>
+  <p>Hier findest du alle Items des Servers, ihre Funktionen und wie man sie bekommt:</p>
+  <div class="grid">
+    <div class="card">
+      <h2>DOOM Rüstung</h2>
+      <p>Rüstung mit besonderen Fähigkeiten wie z.B. +2 Herzen pro Rüstungsteil.</p>
+      <p>|</p>
+      <p>Erhältlich von Spielern, aus Events oder dem DOOM Crate.</p>
+    </div>
+    <div class="card">
+      <h2>DOOM Spitzhacke</h2>
+      <p>Spitzhacke, die 3x3 abbaut und besonders mächtig ist.</p>
+      <p>|</p>
+      <p>Erhältlich von Spielern, aus Events oder dem DOOM Crate.</p>
+    </div>
+    <div class="card">
+      <h2>DOOM Schwert</h2>
+      <p>Schwert mit größerer Reichweite und hohem Schaden.</p>
+      <p>|</p>
+      <p>Erhältlich von Spielern, aus Events oder dem DOOM Crate.</p>
+    </div>
+    <div class="card">
+      <h2>DOOM Speer</h2>
+      <p>Speer für hohe Geschwindigkeit und leichte Gegnerbesiegung.</p>
+      <p>|</p>
+      <p>Erhältlich von Spielern, aus Events oder dem DOOM Crate.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h1>Commands</h1>
+  <p>Liste wichtiger Server-Commands:</p>
+  <div class="grid">
+    <div class="card">
+      <h2>/daily</h2>
+      <p>Holt dein tägliches Equipment.</p>
+    </div>
+    <div class="card">
+      <h2>/shop</h2>
+      <p>Öffnet den Shop.</p>
+    </div>
+    <div class="card">
+      <h2>/spawn</h2>
+      <p>Teleportiert dich zum Spawn.</p>
+    </div>
+    <div class="card">
+      <h2>/sethome</h2>
+      <p>Setzt dein Zuhause, zu dem du mit /home zurückkehren kannst.</p>
+    </div>
+  </div>
+</section>
+
+<footer>© 2026 DOOM SMP | ®Hack_Game</footer>
+</body>
+</html>
