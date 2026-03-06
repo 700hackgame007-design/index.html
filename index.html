@@ -4,160 +4,175 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DOOM SMP</title>
-
 <style>
 body{
-    margin:0;
-    font-family: Arial, sans-serif;
-    background:black;
-    color:white;
-    transition:0.3s;
-    scroll-behavior:smooth;
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#0b0b0b;
+  color:white;
+  scroll-behavior:smooth;
 }
 
+/* NAVBAR */
 nav{
-    display:flex;
-    justify-content:space-between;
-    padding:20px;
-    max-width:1200px;
-    margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 40px;
+  background:#111;
+  border-bottom:1px solid #222;
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+nav h2{
+  cursor:pointer;
+  font-size:28px;
+  background:linear-gradient(90deg,#ff8800,#ffbb33);
+  -webkit-background-clip:text;
+  color:transparent;
 }
 
-.hero{
-    text-align:center;
-    padding:120px 20px;
-}
-
-.glow-title{
-    font-size:70px;
-    font-weight:bold;
-    background:linear-gradient(90deg, red, orange);
-    -webkit-background-clip:text;
-    color:transparent;
-}
-
+/* BUTTONS */
+/* BUTTONS EINHEITLICH ROT */
 .button{
-    padding:15px 30px;
-    border-radius:20px;
-    border:none;
-    cursor:pointer;
-    font-size:18px;
-    margin:10px;
-    transition:0.3s;
+  padding:12px 28px;
+  border:none;
+  border-radius:30px;
+  cursor:pointer;
+  font-weight:bold;
+  color:white;
+  background:#FF3300; /* kräftiges Rot-Orange */
+  position:relative;
+  overflow:hidden;
+  transition:0.3s;
 }
-
+.button::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-100%;
+  width:100%;
+  height:100%;
+  background:rgba(255,255,255,0.15);
+  transition:0.4s;
+}
+.button:hover::before{
+  left:100%;
+}
 .button:hover{
-    transform:scale(1.1);
+  transform:translateY(-2px);
+  box-shadow:0 5px 15px rgba(255,51,0,0.5);
 }
 
-.red{background:red;color:white;}
-.blue{background:blue;color:white;}
-.green{background:green;color:white;}
-
+/* HERO GLOW-TITLE ROT */
+.glow-title{
+  font-size:70px;
+  font-weight:bold;
+  background:linear-gradient(90deg,#FF3300,#FF6600); /* stärkeres Rot */
+  -webkit-background-clip:text;
+  color:transparent;
+}
+.released{
+  font-size:24px;
+  font-weight:bold;
+  background:linear-gradient(90deg,#FF3300,#FF6600);
+  -webkit-background-clip:text;
+  color:transparent;
+  margin:10px 0;
+}
+/* SECTIONS */
 .section{
-    padding:80px 20px;
-    text-align:center;
-    opacity:0;
-    transform:translateY(50px);
-    transition:0.8s;
+  padding:80px 20px;
+  text-align:center;
+  opacity:0;
+  transform:translateY(50px);
+  transition:0.8s;
 }
-
 .section.visible{
-    opacity:1;
-    transform:translateY(0);
+  opacity:1;
+  transform:translateY(0);
 }
-
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:30px;
-    max-width:1100px;
-    margin:auto;
-}
-
-.card{
-    background:#111;
-    padding:30px;
-    border-radius:25px;
-    box-shadow:0 0 20px rgba(255,255,255,0.05);
-    transition:0.3s;
-}
-
-.card img{
-    width:100%;
-    border-radius:20px;
-    transition:0.4s;
-    cursor:pointer;
-}
-
-.card img:hover{
-    transform:scale(1.08);
-}
-
-footer{
-    text-align:center;
-    padding:40px;
-    border-top:1px solid #222;
-    opacity:0.6;
-}
-
-.light{
-    background:white;
-    color:black;
-}
-
-.light .card{
-    background:#f5f5f5;
-    color:black;
-}
-
-.light .glow-title{
-    background:linear-gradient(90deg,#ff4500,#ff9900);
-    -webkit-background-clip:text;
-    color:transparent;
-}
-
 .dark-section{
-    background:#111;
+  background:#111;
 }
 
-/* Lightbox */
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:30px;
+  max-width:1100px;
+  margin:auto;
+}
+
+/* CARDS */
+.card{
+  background:#111;
+  padding:30px;
+  border-radius:20px;
+  transition:0.3s;
+  border:1px solid rgba(255,255,255,0.05);
+}
+.card:hover{
+  transform:translateY(-5px);
+}
+.card img{
+  width:100%;
+  border-radius:20px;
+  cursor:pointer;
+  transition:0.3s;
+}
+.card img:hover{
+  transform:scale(1.05);
+}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:40px;
+  border-top:1px solid #222;
+}
+
+/* LIGHTBOX */
 #lightbox{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.9);
-    display:none;
-    justify-content:center;
-    align-items:center;
-    z-index:999;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.9);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:999;
 }
-
 #lightbox img{
-    max-width:80%;
-    max-height:80%;
-    border-radius:20px;
+  max-width:80%;
+  max-height:80%;
+  border-radius:20px;
 }
 </style>
 </head>
-
 <body>
 
 <nav>
-<h2>DOOM SMP</h2>
-<button class="button" onclick="toggleMode()">Light/Dark</button>
+<h2 onclick="location.href='index.html'">DOOM SMP</h2>
+<div>
+<button class="button" onclick="location.href='index.html'">Home</button>
+<button class="button" onclick="location.href='clans.html'">Clans</button>
+<button class="button" onclick="location.href='wiki.html'">Wiki</button>
+<button class="button" onclick="window.open('https://discord.gg/n6HSnBmnph')">Discord</button>
+</div>
 </nav>
 
 <section class="hero section">
 <h1 class="glow-title">DOOM SMP</h1>
+<h3 class="released">RELEASED NOW</h3>
 <p>Überlebe. Kämpfe. Baue dein Imperium.</p>
-
+<button class="button" onclick="copyServerIP()">IP Kopieren</button>
 <p id="serverStatus">Status: Lade...</p>
 <p id="playerCount">Spieler: ...</p>
-
-<button class="button red" onclick="copyServerIP()">IP Kopieren</button>
 </section>
 
 <section class="section grid">
@@ -188,13 +203,22 @@ footer{
 </section>
 
 <section class="section dark-section">
-<h2>Discord</h2>
-<button class="button blue" onclick="window.open('https://discord.gg/n6HSnBmnph','_blank')">
-Discord öffnen
-</button>
+<h2>Top Clans</h2>
+<p>Die stärksten Clans auf DOOM SMP.</p>
+<button class="button" onclick="location.href='clans.html'">Top Clans ansehen</button>
 </section>
 
-<!-- Galerie -->
+<section class="section dark-section">
+<h2>Server Wiki</h2>
+<p>Alle Infos zu Commands, Items und Features.</p>
+<button class="button" onclick="location.href='wiki.html'">Zum Wiki</button>
+</section>
+
+<section class="section dark-section">
+<h2>Discord</h2>
+<button class="button" onclick="window.open('https://discord.gg/n6HSnBmnph')">Discord öffnen</button>
+</section>
+
 <section class="section">
 <h2>Galerie</h2>
 <div class="grid">
@@ -204,75 +228,28 @@ Discord öffnen
 </div>
 </section>
 
-<!-- Intro -->
 <section class="section dark-section">
 <h2>DOOMSMP Intro</h2>
-
 <div style="max-width:900px;margin:auto;">
-    <iframe width="722" height="406" src="https://www.youtube.com/embed/XebtEeHbmBo" title="DoomSMP Tutorial" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="722" height="406" src="https://www.youtube.com/embed/XebtEeHbmBo" allowfullscreen></iframe>
 </div>
-
 <br>
-
-<button class="button red"
-onclick="window.open('https://www.youtube.com/@DoomSMP1','_blank')">
-YouTube Kanal besuchen
-</button>
-
+<button class="button" onclick="window.open('https://www.youtube.com/@DoomSMP1')">YouTube Kanal besuchen</button>
 </section>
 
-<footer>
-© 2026 DOOM SMP | ®Hack_Game
-</footer>
+<footer>© 2026 DOOM SMP | ®Hack_Game</footer>
 
-<!-- Lightbox -->
 <div id="lightbox" onclick="closeLightbox()">
 <img id="lightbox-img">
 </div>
 
 <script>
-function copyServerIP(){
-    navigator.clipboard.writeText("DOOMSMP.de");
-    alert("IP kopiert!");
-}
-
-function toggleMode(){
-    document.body.classList.toggle("light");
-}
-
-function openLightbox(src){
-    document.getElementById("lightbox").style.display="flex";
-    document.getElementById("lightbox-img").src=src;
-}
-
-function closeLightbox(){
-    document.getElementById("lightbox").style.display="none";
-}
-
-// Scroll Animation
-const sections = document.querySelectorAll(".section");
-window.addEventListener("scroll", () => {
-    sections.forEach(sec => {
-        const top = sec.getBoundingClientRect().top;
-        if(top < window.innerHeight - 100){
-            sec.classList.add("visible");
-        }
-    });
-});
-
-// Server Status
-async function loadServer(){
-    try{
-        let res = await fetch("https://api.mcsrvstat.us/2/DOOMSMP.de");
-        let data = await res.json();
-        document.getElementById("serverStatus").innerText =
-            "Status: " + (data.online ? "🟢 Online" : "🔴 Offline");
-        document.getElementById("playerCount").innerText =
-            "Spieler: " + (data.players?.online || 0);
-    }catch(e){
-        document.getElementById("serverStatus").innerText = "Status: Fehler";
-    }
-}
+function copyServerIP(){navigator.clipboard.writeText("DOOMSMP.de"); alert("IP kopiert!");}
+function openLightbox(src){document.getElementById("lightbox").style.display="flex";document.getElementById("lightbox-img").src=src;}
+function closeLightbox(){document.getElementById("lightbox").style.display="none";}
+const sections=document.querySelectorAll(".section");
+window.addEventListener("scroll",()=>{sections.forEach(sec=>{const top=sec.getBoundingClientRect().top;if(top<window.innerHeight-100){sec.classList.add("visible");}});});
+async function loadServer(){try{let res=await fetch("https://api.mcsrvstat.us/2/DOOMSMP.de");let data=await res.json();document.getElementById("serverStatus").innerText="Status: "+(data.online?"🟢 Online":"🔴 Offline");document.getElementById("playerCount").innerText="Spieler: "+(data.players?.online||0);}catch{document.getElementById("serverStatus").innerText="Status: Fehler";}}
 loadServer();
 </script>
 
