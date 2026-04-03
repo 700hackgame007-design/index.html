@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DOOM SMP Panel</title>
+<style>
+body{margin:0;font-family:Arial;background:#0b0b0b;color:white}
+/* Sidebar */
+.sidebar{width:220px;height:100vh;background:#111;position:fixed;padding:20px}
+.sidebar h2{background:linear-gradient(90deg,#FF3300,#FF6600);-webkit-background-clip:text;color:transparent;margin-bottom:20px}
+.sidebar button{width:100%;margin:8px 0;padding:10px;border:none;border-radius:12px;background:#222;color:white;cursor:pointer;text-align:left;padding-left:15px;font-weight:bold}
+.sidebar button:hover{background:#FF3300}
+/* Main */
+.main{margin-left:240px;padding:20px}
+/* Boxes */
+.box{background:#111;padding:20px;border-radius:15px;margin-bottom:20px}
+/* Dashboard Logs */
+#dashLogs{background:black;height:300px;overflow:auto;padding:10px;font-family:monospace;border-radius:10px;margin-top:10px;white-space:pre-wrap}
+/* Console Input */
+#cmd{width:70%;padding:8px;border-radius:10px;border:none;background:#222;color:white;margin-right:5px}
+.panelBtn{padding:8px 15px;border:none;border-radius:12px;background:#FF3300;color:white;cursor:pointer;margin:3px}
+.panelBtn:hover{background:#FF6600}
+/* Tables */
+table{width:100%;border-collapse:collapse}
+td,th{border:1px solid #222;padding:8px;text-align:left}
+th{background:#222}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+<h2>DOOM SMP</h2>
+<button onclick="show('dashboard')">Dashboard</button>
+<button onclick="show('players')">Spieler</button>
+<button onclick="show('team')">Team</button>
+<button onclick="show('requests')">Anfragen</button>
+<button onclick="logout()">Logout</button>
+</div>
+
+<div class="main">
+<!-- Dashboard -->
+<div id="dashboard" class="box">
+<h2>Dashboard</h2>
+<p>Online: <span id="online">0</span> | Total: <span id="total">0</span></p>
+<div id="dashLogs"></div>
+<input id="cmd" placeholder="Command">
+<button class="panelBtn" onclick="sendCommand()">Senden</button>
+<div id="adminControls" style="margin-top:10px;display:none">
+  <button class="panelBtn" onclick="sendRaw('start')">START</button>
+  <button class="panelBtn" onclick="sendRaw('stop')">STOP</button>
+  <button class="panelBtn" onclick="sendRaw('restart')">RESTART</button>
+</div>
+</div>
+
+<!-- Spieler -->
+<div id="players" class="box" style="display:none">
+<h2>Spieler</h2>
+<table id="playerTable"><tr><th>Name</th><th>Status</th><th>Notiz</th></tr></table>
+</div>
+
+<!-- Team -->
+<div id="team" class="box" style="display:none">
+<h2>Team</h2>
+<table id="teamTable"><tr><th>Name</th><th>Rolle</th></tr></table>
+</div>
+
+<!-- Anfragen -->
+<div id="requests" class="box" style="display:none">
+<h2>Anfragen</h2>
+<table id="requestTable"><tr><th>Typ</th><th>Von</th><th>Aktion</th><th>Status</th></tr></table>
+</div>
+
+</div>
+
+<script>
+// Rolle aus Login
+const role = localStorage.getItem("role");
+if(role==="Admin"||role==="SrDev") document.getElementById("adminControls").style.display="block";
+
+// Tabs
+function show(tab){document.querySelectorAll(".box").forEach(b=>b.style.display="none");document.getElementById(tab).style.display="block"}
+function logout(){localStorage.clear();window.location.href="login.html"}
+
+// API Endpoint auf Rootserver
+const api = "http://45.93.249.6:3000"; // Backend auf Rootserver
+async function loadTables(){
+  try {
+    const pl = await fetch(api+"/players").then(r=>r.json());
+    const tm = await fetch(api+"/team").then(r=>r.json());
+    const rq = await fetch(api+"/requests").then(r=>r.json());
+
+    document.getElementById("playerTable").innerHTML =
+      "<tr><th>Name</th><th>Status</th><th>Notiz</th></tr>"+
+      pl.map(p=>`<tr><td>${p.name}</td><td>${p.status}</td><td>${p.note||""}</td></tr>`).join("");
+
+    document.getElementById("teamTable").innerHTML =
+      "<tr><th>Name</th><th>Rolle</th></tr>"+
+      tm.map(t=>`<tr><td>${t.name}</td><td>${t.role}</td></tr>`).join("");
+
+    document.getElementById("requestTable").innerHTML =
+      "<tr><th>Typ</th><th>Von</th><th>Aktion</th><th>Status</th></tr>"+
+      rq.map(r=>`<tr><td>${r.type}</td><td>${r.from}</td><td>${r.action}</td><td>${r.status}</td></tr>`).join("");
+  } catch(err){
+    addLine("[FEHLER] API nicht erreichbar");
+  }
+}
+
+// WebSocket für Logs & Commands
+const ws = new WebSocket("ws://45.93.249.6:3000");
+ws.onmessage = e=>addLine(e.data);
+function addLine(t){const d=document.getElementById("dashLogs");d.innerHTML+=t+"\n";d.scrollTop=d.scrollHeight}
+
+// Commands
+function sendCommand(){
+  const c=document.getElementById("cmd").value;
+  if(c.trim()!==""){ws.send(c);addLine("> "+c);document.getElementById("cmd").value="";}
+}
+function sendRaw(cmd){ws.send(cmd);addLine("[ADMIN] Command sent: "+cmd)}
+
+// Dummy Dashboard Counts
+let online=2,totalCount=3;
+document.getElementById("online").innerText=online;
+document.getElementById("total").innerText=totalCount;
+
+// Auto-refresh Tables
+setInterval(loadTables,5000);
+loadTables();
+</script>
+</body>
+</html>
