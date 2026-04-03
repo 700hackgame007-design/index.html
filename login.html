@@ -5,88 +5,56 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DOOM SMP Login</title>
 <style>
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#0b0b0b;
-  color:white;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-}
-.box{
-  background:#111;
-  padding:50px;
-  border-radius:25px;
-  text-align:center;
-  width:350px;
-  box-shadow:0 0 20px rgba(255,51,0,0.6);
-}
-h1{
-  font-size:40px;
-  background:linear-gradient(90deg,#FF3300,#FF6600);
-  -webkit-background-clip:text;
-  color:transparent;
-  margin-bottom:20px;
-}
-input{
-  display:block;
-  margin:15px auto;
-  padding:12px;
-  border-radius:15px;
-  border:none;
-  width:80%;
-  background:#222;
-  color:white;
-}
-button{
-  padding:12px 30px;
-  border:none;
-  border-radius:25px;
-  background:#FF3300;
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-  margin-top:10px;
-  transition:0.3s;
-  width:60%;
-}
-button:hover{
-  background:#FF6600;
-  transform:translateY(-2px);
-}
+body{margin:0;font-family:Arial;background:#0b0b0b;color:white;display:flex;justify-content:center;align-items:center;height:100vh}
+.loginBox{background:#111;padding:40px;border-radius:20px;width:300px;text-align:center;box-shadow:0 0 20px rgba(255,51,0,0.5)}
+h2{background:linear-gradient(90deg,#FF3300,#FF6600);-webkit-background-clip:text;color:transparent;margin-bottom:20px}
+input{width:100%;padding:10px;margin:10px 0;border-radius:10px;border:none;background:#222;color:white}
+button{width:100%;padding:10px;margin-top:15px;border:none;border-radius:12px;background:#FF3300;color:white;font-weight:bold;cursor:pointer}
+button:hover{background:#FF6600}
+#errorMsg{color:#FF3300;margin-top:10px;display:none}
 </style>
 </head>
 <body>
-
-<div class="box">
-<h1>DOOM SMP</h1>
-<input id="user" placeholder="Username">
-<input id="pass" type="password" placeholder="Password">
-<button onclick="login()">Login</button>
+<div class="loginBox">
+<h2>DOOM SMP Login</h2>
+<input type="text" id="username" placeholder="Benutzername">
+<input type="password" id="password" placeholder="Passwort">
+<button onclick="login()">Anmelden</button>
+<p id="errorMsg">Benutzername oder Passwort falsch</p>
 </div>
 
 <script>
-async function login() {
-    const user = document.getElementById("username").value;
-    const pass = document.getElementById("password").value;
+async function login(){
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const errorEl = document.getElementById("errorMsg");
 
-const res = await fetch("http://45.93.249.6:3000/login", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({username, password})
-});
+  if(!username || !password){
+    errorEl.innerText="Bitte Benutzername und Passwort eingeben";
+    errorEl.style.display="block";
+    return;
+  }
+
+  try {
+    const res = await fetch("http://45.93.249.6:3000/login", { // Backend Rootserver
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({username,password})
+    });
     const data = await res.json();
 
     if(data.success){
-        localStorage.setItem("role", data.role); // Role speichern
-        window.location.href="panel.html";       // Weiterleitung
+      localStorage.setItem("role",data.role);
+      window.location.href="panel.html";
     } else {
-        alert("Login fehlgeschlagen!");
+      errorEl.innerText = "Benutzername oder Passwort falsch";
+      errorEl.style.display="block";
     }
+  } catch(e){
+    errorEl.innerText="Backend nicht erreichbar";
+    errorEl.style.display="block";
+  }
 }
 </script>
-
 </body>
 </html>
